@@ -15,7 +15,7 @@ const CATEGORIES = [
 ];
 
 export default function PartCategoriesScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
 
     const renderCategory = ({ item }: { item: any }) => (
         <TouchableOpacity

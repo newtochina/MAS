@@ -14,7 +14,6 @@ export default function ProfileNavigator() {
             screenOptions={{
                 headerStyle: {
                     backgroundColor: Colors.background,
-                    shadowColor: 'transparent',
                 },
                 headerTintColor: Colors.text,
                 headerTitleStyle: {

@@ -16,7 +16,7 @@ const MOCK_BIKES = [
 ];
 
 export default function GarageHomeScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const [bikes, setBikes] = useState(MOCK_BIKES);
 
     const renderBikeItem = ({ item }: { item: any }) => (

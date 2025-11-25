@@ -14,7 +14,7 @@ const BRANDS = [
 ];
 
 export default function PartBrandsScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const route = useRoute();
     const { category } = route.params as { category: any };
 

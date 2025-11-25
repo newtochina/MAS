@@ -12,7 +12,7 @@ if (Platform.OS === 'android') {
 }
 
 export default function BikeDetailsScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const route = useRoute();
     const { bike } = route.params as { bike: any };
 
