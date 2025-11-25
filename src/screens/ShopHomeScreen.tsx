@@ -18,15 +18,32 @@ export default function ShopHomeScreen() {
                         style={styles.heroImage}
                     />
                     <View style={styles.heroOverlay}>
-                        <Text style={styles.shopName}>Motomatch Garage</Text>
                         <View style={styles.statusBadge}>
                             <View style={styles.statusDot} />
-                            <Text style={styles.statusText}>Open Now</Text>
+                            <Text style={styles.statusText}>Open Now • Closes 6PM</Text>
                         </View>
+                        <Text style={styles.shopName}>Motomatch Garage</Text>
+                        <Text style={styles.tagline}>Premium Motorcycle Care & Performance</Text>
                     </View>
                 </View>
 
                 <View style={GlobalStyles.screenContainer}>
+                    {/* Trust Signals */}
+                    <View style={styles.trustSignals}>
+                        <View style={styles.trustItem}>
+                            <Ionicons name="shield-checkmark" size={24} color={Colors.accent} />
+                            <Text style={styles.trustText}>Certified</Text>
+                        </View>
+                        <View style={styles.trustItem}>
+                            <Ionicons name="trophy" size={24} color={Colors.accent} />
+                            <Text style={styles.trustText}>Award Winning</Text>
+                        </View>
+                        <View style={styles.trustItem}>
+                            <Ionicons name="star" size={24} color={Colors.accent} />
+                            <Text style={styles.trustText}>4.9/5 Rating</Text>
+                        </View>
+                    </View>
+
                     {/* Quick Actions */}
                     <View style={styles.actionGrid}>
                         <TouchableOpacity
@@ -34,34 +51,42 @@ export default function ShopHomeScreen() {
                             onPress={() => navigation.navigate('Booking')}
                         >
                             <View style={[styles.iconCircle, { backgroundColor: Colors.primary }]}>
-                                <Ionicons name="calendar" size={24} color="#FFF" />
+                                <Ionicons name="calendar" size={28} color="#FFF" />
                             </View>
                             <Text style={styles.actionTitle}>Book Service</Text>
+                            <Text style={styles.actionSubtitle}>Schedule a visit</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={styles.actionCard}
                             onPress={() => navigation.navigate('Visualizer')}
                         >
-                            <View style={[styles.iconCircle, { backgroundColor: Colors.accent }]}>
-                                <Ionicons name="construct" size={24} color="#000" />
+                            <View style={[styles.iconCircle, { backgroundColor: Colors.surfaceLight }]}>
+                                <Ionicons name="construct" size={28} color={Colors.primary} />
                             </View>
                             <Text style={styles.actionTitle}>Diagnose</Text>
+                            <Text style={styles.actionSubtitle}>Identify issues</Text>
                         </TouchableOpacity>
                     </View>
 
                     {/* Services Preview */}
-                    <Text style={[GlobalStyles.title, { marginTop: 24 }]}>Our Services</Text>
+                    <View style={styles.sectionHeader}>
+                        <Text style={GlobalStyles.title}>Our Services</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Booking')}>
+                            <Text style={{ color: Colors.primary, fontWeight: '600' }}>See All</Text>
+                        </TouchableOpacity>
+                    </View>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicesScroll}>
                         {[
-                            { name: 'Full Service', icon: 'build' },
-                            { name: 'Tire Change', icon: 'disc' },
-                            { name: 'Oil Change', icon: 'water' },
-                            { name: 'Dyno Tune', icon: 'speedometer' },
+                            { name: 'Full Service', icon: 'build', price: 'fr. $250' },
+                            { name: 'Tire Change', icon: 'disc', price: 'fr. $80' },
+                            { name: 'Oil Change', icon: 'water', price: 'fr. $120' },
+                            { name: 'Dyno Tune', icon: 'speedometer', price: 'fr. $300' },
                         ].map((service, index) => (
                             <View key={index} style={styles.serviceCard}>
                                 <Ionicons name={service.icon as any} size={32} color={Colors.primary} />
                                 <Text style={styles.serviceName}>{service.name}</Text>
+                                <Text style={styles.servicePrice}>{service.price}</Text>
                             </View>
                         ))}
                     </ScrollView>
@@ -70,7 +95,7 @@ export default function ShopHomeScreen() {
                     <View style={styles.sectionHeader}>
                         <Text style={GlobalStyles.title}>My Garage</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('GarageHome')}>
-                            <Text style={{ color: Colors.primary }}>View All</Text>
+                            <Text style={{ color: Colors.primary, fontWeight: '600' }}>View All</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -88,22 +113,23 @@ export default function ShopHomeScreen() {
                         <Ionicons name="chevron-forward" size={24} color={Colors.textSecondary} style={{ marginLeft: 'auto' }} />
                     </TouchableOpacity>
 
-                    {/* Contact Info */}
-                    <View style={styles.contactCard}>
-                        <Text style={styles.contactTitle}>Visit Us</Text>
-                        <View style={styles.contactRow}>
-                            <Ionicons name="location" size={20} color={Colors.textSecondary} />
-                            <Text style={styles.contactText}>123 Moto Street, Sydney NSW</Text>
-                        </View>
-                        <View style={styles.contactRow}>
-                            <Ionicons name="time" size={20} color={Colors.textSecondary} />
-                            <Text style={styles.contactText}>Mon-Fri: 8am - 6pm</Text>
-                        </View>
-                        <View style={styles.contactRow}>
-                            <Ionicons name="call" size={20} color={Colors.textSecondary} />
-                            <Text style={styles.contactText}>(02) 9999 8888</Text>
-                        </View>
-                    </View>
+                    {/* Testimonials */}
+                    <Text style={[GlobalStyles.title, { marginTop: 32 }]}>Happy Riders</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicesScroll}>
+                        {[
+                            { text: "Best mechanic in town. My Ducati runs smoother than ever!", author: "James S." },
+                            { text: "Super fast turnaround and great prices. Highly recommend!", author: "Sarah L." },
+                            { text: "The team really knows their stuff. Fixed my electrical issue in no time.", author: "Mike T." },
+                        ].map((item, index) => (
+                            <View key={index} style={styles.testimonialCard}>
+                                <Text style={styles.testimonialText}>"{item.text}"</Text>
+                                <View style={styles.testimonialAuthor}>
+                                    <Ionicons name="person-circle" size={20} color={Colors.textSecondary} />
+                                    <Text style={styles.authorName}>{item.author}</Text>
+                                </View>
+                            </View>
+                        ))}
+                    </ScrollView>
                 </View>
             </ScrollView>
         </View>
@@ -112,7 +138,7 @@ export default function ShopHomeScreen() {
 
 const styles = StyleSheet.create({
     hero: {
-        height: 250,
+        height: 350,
         position: 'relative',
     },
     heroImage: {
@@ -121,17 +147,38 @@ const styles = StyleSheet.create({
     },
     heroOverlay: {
         position: 'absolute',
+        top: 0,
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 20,
-        backgroundColor: 'rgba(0,0,0,0.4)',
+        padding: 24,
+        justifyContent: 'flex-end',
+        backgroundColor: 'rgba(0,0,0,0.3)', // Base dim
+    },
+    heroGradient: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 200,
+        // Simulating linear gradient with background color for now as we don't have expo-linear-gradient
+        backgroundColor: 'rgba(15,15,15,0.9)',
     },
     shopName: {
-        fontSize: 28,
-        fontWeight: 'bold',
+        fontSize: 36,
+        fontWeight: '800',
         color: '#FFF',
         marginBottom: 8,
+        letterSpacing: -1,
+        textShadowColor: 'rgba(0,0,0,0.5)',
+        textShadowOffset: { width: 0, height: 2 },
+        textShadowRadius: 4,
+    },
+    tagline: {
+        fontSize: 16,
+        color: '#E0E0E0',
+        marginBottom: 16,
+        fontWeight: '500',
     },
     statusBadge: {
         flexDirection: 'row',
@@ -139,62 +186,90 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(52, 199, 89, 0.2)',
         paddingHorizontal: 12,
         paddingVertical: 6,
-        borderRadius: 16,
+        borderRadius: 20,
         alignSelf: 'flex-start',
         borderWidth: 1,
         borderColor: '#34C759',
+        marginBottom: 24,
     },
     statusDot: {
         width: 8,
         height: 8,
         borderRadius: 4,
         backgroundColor: '#34C759',
-        marginRight: 6,
+        marginRight: 8,
+        shadowColor: '#34C759',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.8,
+        shadowRadius: 4,
     },
     statusText: {
         color: '#34C759',
         fontWeight: 'bold',
+        fontSize: 13,
+    },
+    trustSignals: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.border,
+        marginBottom: 20,
+    },
+    trustItem: {
+        alignItems: 'center',
+        gap: 8,
+    },
+    trustText: {
+        color: Colors.textSecondary,
         fontSize: 12,
+        fontWeight: '600',
     },
     actionGrid: {
         flexDirection: 'row',
         gap: 16,
-        marginTop: 20,
+        marginBottom: 32,
     },
     actionCard: {
         flex: 1,
         backgroundColor: Colors.surface,
-        padding: 16,
-        borderRadius: 16,
+        padding: 20,
+        borderRadius: 20,
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Colors.border,
+        ...GlobalStyles.shadow,
     },
     iconCircle: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
+        width: 56,
+        height: 56,
+        borderRadius: 28,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 12,
+        marginBottom: 16,
     },
     actionTitle: {
         color: Colors.text,
-        fontWeight: '600',
+        fontWeight: '700',
         fontSize: 16,
     },
+    actionSubtitle: {
+        color: Colors.textSecondary,
+        fontSize: 12,
+        marginTop: 4,
+    },
     servicesScroll: {
-        marginTop: 12,
-        marginHorizontal: -16,
-        paddingHorizontal: 16,
+        marginHorizontal: -20,
+        paddingHorizontal: 20,
+        marginBottom: 32,
     },
     serviceCard: {
         backgroundColor: Colors.surface,
         padding: 16,
-        borderRadius: 12,
-        marginRight: 12,
-        width: 120,
-        height: 120,
+        borderRadius: 16,
+        marginRight: 16,
+        width: 140,
+        height: 140,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
@@ -202,66 +277,76 @@ const styles = StyleSheet.create({
     },
     serviceName: {
         color: Colors.text,
-        marginTop: 12,
+        marginTop: 16,
         textAlign: 'center',
-        fontWeight: '500',
+        fontWeight: '600',
+        fontSize: 14,
+    },
+    servicePrice: {
+        color: Colors.primary,
+        marginTop: 4,
+        fontWeight: 'bold',
+        fontSize: 12,
     },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 32,
-        marginBottom: 12,
+        marginBottom: 16,
     },
     garageCard: {
         backgroundColor: Colors.surface,
-        padding: 16,
-        borderRadius: 12,
+        padding: 20,
+        borderRadius: 16,
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Colors.border,
+        ...GlobalStyles.shadow,
     },
     garageIcon: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: Colors.background,
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: Colors.surfaceLight,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 16,
     },
     garageTitle: {
         color: Colors.text,
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
+        marginBottom: 4,
     },
     garageSubtitle: {
         color: Colors.textSecondary,
         fontSize: 14,
     },
-    contactCard: {
-        marginTop: 32,
+    testimonialCard: {
         backgroundColor: Colors.surface,
-        padding: 20,
+        padding: 16,
         borderRadius: 16,
+        marginRight: 16,
+        width: 280,
         borderWidth: 1,
         borderColor: Colors.border,
     },
-    contactTitle: {
+    testimonialText: {
         color: Colors.text,
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    contactRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        fontSize: 14,
+        fontStyle: 'italic',
+        lineHeight: 20,
         marginBottom: 12,
     },
-    contactText: {
+    testimonialAuthor: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    authorName: {
         color: Colors.textSecondary,
-        marginLeft: 12,
-        fontSize: 16,
+        fontSize: 12,
+        fontWeight: '600',
     },
 });

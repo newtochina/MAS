@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Colors } from '../constants/Colors';
-import MapScreen from '../screens/MapScreen';
 import ShopStoreScreen from '../screens/ShopStoreScreen';
 import GarageNavigator from './GarageNavigator';
 import ProfileNavigator from './ProfileNavigator';
@@ -24,8 +23,6 @@ export default function MainNavigator() {
                         iconName = focused ? 'home' : 'home-outline';
                     } else if (route.name === 'Visualizer') {
                         iconName = focused ? 'eye' : 'eye-outline';
-                    } else if (route.name === 'Location') {
-                        iconName = focused ? 'location' : 'location-outline';
                     } else if (route.name === 'Store') {
                         iconName = focused ? 'cart' : 'cart-outline';
                     } else if (route.name === 'Profile') {
@@ -55,7 +52,6 @@ export default function MainNavigator() {
             <Tab.Screen name="Home" component={GarageNavigator} options={{ headerShown: false }} />
             <Tab.Screen name="Visualizer" component={VisualizerNavigator} options={{ headerShown: false }} />
             <Tab.Screen name="Store" component={ShopStoreScreen} />
-            <Tab.Screen name="Location" component={MapScreen} />
             <Tab.Screen name="Profile" component={ProfileNavigator} options={{ headerShown: false }} />
         </Tab.Navigator>
     );

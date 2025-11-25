@@ -1,12 +1,17 @@
 export const Colors = {
-  primary: '#D32F2F', // Deeper, more premium red
-  background: '#0A0A0A', // Richer dark background
-  surface: '#1C1C1E', // Apple-style dark surface
+  primary: '#E31C25', // Ducati Red - High energy, premium
+  primaryDark: '#B0121A', // Darker shade for gradients/active states
+  background: '#0F0F0F', // Almost black, deep matte
+  surface: '#1A1A1A', // Slightly lighter for cards
+  surfaceLight: '#2A2A2A', // For inputs/secondary cards
   text: '#FFFFFF',
-  textSecondary: '#8E8E93', // iOS gray
-  accent: '#FFD700', // Gold remains for premium accents
-  tabBar: '#1C1C1E',
-  border: '#2C2C2E',
+  textSecondary: '#A0A0A0',
+  textTertiary: '#666666',
+  accent: '#FFD700', // Gold for premium badges/ratings
+  tabBar: '#0F0F0F',
+  border: '#333333',
   success: '#34C759',
   error: '#FF3B30',
+  cardGradientStart: '#1A1A1A',
+  cardGradientEnd: '#222222',
 };

@@ -6,26 +6,41 @@ import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
 
 const SERVICES = [
-    { id: '1', name: 'General Service', price: '$250' },
-    { id: '2', name: 'Oil Change', price: '$120' },
-    { id: '3', name: 'Tire Replacement', price: '$80' },
-    { id: '4', name: 'Brake Inspection', price: '$60' },
-    { id: '5', name: 'Diagnostics', price: '$150' },
+    { id: '1', name: 'General Service', price: 250, icon: 'construct' },
+    { id: '2', name: 'Oil Change', price: 120, icon: 'water' },
+    { id: '3', name: 'Tire Change', price: 80, icon: 'disc' },
+    { id: '4', name: 'Brake Check', price: 60, icon: 'hand-left' },
+    { id: '5', name: 'Diagnostics', price: 150, icon: 'pulse' },
+    { id: '6', name: 'Chain Lube', price: 40, icon: 'link' },
 ];
+
+// Generate next 7 days
+const DATES = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i + 1);
+    return {
+        id: i.toString(),
+        day: d.toLocaleDateString('en-US', { weekday: 'short' }),
+        date: d.getDate(),
+        fullDate: d.toISOString(),
+    };
+});
 
 export default function BookingScreen() {
     const navigation = useNavigation();
-    const [selectedService, setSelectedService] = useState<string | null>(null);
-    const [date, setDate] = useState('');
+    const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+    const [selectedDateId, setSelectedDateId] = useState<string | null>(null);
     const [notes, setNotes] = useState('');
 
+    const selectedService = SERVICES.find(s => s.id === selectedServiceId);
+
     const handleBook = () => {
-        if (!selectedService || !date) {
-            Alert.alert('Error', 'Please select a service and date.');
+        if (!selectedServiceId || !selectedDateId) {
+            Alert.alert('Incomplete', 'Please select a service and a date.');
             return;
         }
-        Alert.alert('Success', 'Your appointment request has been sent!', [
-            { text: 'OK', onPress: () => navigation.goBack() }
+        Alert.alert('Booking Confirmed', `Your ${selectedService?.name} is scheduled!`, [
+            { text: 'Awesome', onPress: () => navigation.goBack() }
         ]);
     };
 
@@ -33,48 +48,67 @@ export default function BookingScreen() {
         <View style={GlobalStyles.container}>
             <ScrollView contentContainerStyle={GlobalStyles.screenContainer}>
                 <Text style={GlobalStyles.title}>Book Service</Text>
-                <Text style={GlobalStyles.subtitle}>Select a Service</Text>
 
-                <View style={styles.servicesContainer}>
+                <Text style={GlobalStyles.subtitle}>Select Service</Text>
+                <View style={styles.servicesGrid}>
                     {SERVICES.map((service) => (
                         <TouchableOpacity
                             key={service.id}
                             style={[
                                 styles.serviceCard,
-                                selectedService === service.id && styles.serviceCardSelected
+                                selectedServiceId === service.id && styles.serviceCardSelected
                             ]}
-                            onPress={() => setSelectedService(service.id)}
+                            onPress={() => setSelectedServiceId(service.id)}
                         >
-                            <View>
-                                <Text style={[
-                                    styles.serviceName,
-                                    selectedService === service.id && styles.serviceTextSelected
-                                ]}>{service.name}</Text>
-                                <Text style={[
-                                    styles.servicePrice,
-                                    selectedService === service.id && styles.serviceTextSelected
-                                ]}>{service.price}</Text>
+                            <View style={[
+                                styles.serviceIconContainer,
+                                selectedServiceId === service.id && styles.serviceIconContainerSelected
+                            ]}>
+                                <Ionicons
+                                    name={service.icon as any}
+                                    size={24}
+                                    color={selectedServiceId === service.id ? '#FFF' : Colors.primary}
+                                />
                             </View>
-                            {selectedService === service.id && (
-                                <Ionicons name="checkmark-circle" size={24} color={Colors.text} />
-                            )}
+                            <Text style={[
+                                styles.serviceName,
+                                selectedServiceId === service.id && styles.serviceTextSelected
+                            ]}>{service.name}</Text>
+                            <Text style={[
+                                styles.servicePrice,
+                                selectedServiceId === service.id && styles.serviceTextSelected
+                            ]}>${service.price}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
 
-                <Text style={[GlobalStyles.subtitle, { marginTop: 24 }]}>Preferred Date</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="DD/MM/YYYY"
-                    placeholderTextColor={Colors.textSecondary}
-                    value={date}
-                    onChangeText={setDate}
-                />
+                <Text style={[GlobalStyles.subtitle, { marginTop: 32 }]}>Select Date</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.dateScroll}>
+                    {DATES.map((date) => (
+                        <TouchableOpacity
+                            key={date.id}
+                            style={[
+                                styles.dateCard,
+                                selectedDateId === date.id && styles.dateCardSelected
+                            ]}
+                            onPress={() => setSelectedDateId(date.id)}
+                        >
+                            <Text style={[
+                                styles.dayText,
+                                selectedDateId === date.id && styles.dateTextSelected
+                            ]}>{date.day}</Text>
+                            <Text style={[
+                                styles.dateText,
+                                selectedDateId === date.id && styles.dateTextSelected
+                            ]}>{date.date}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
 
-                <Text style={[GlobalStyles.subtitle, { marginTop: 24 }]}>Notes</Text>
+                <Text style={[GlobalStyles.subtitle, { marginTop: 32 }]}>Notes</Text>
                 <TextInput
-                    style={[styles.input, styles.textArea]}
-                    placeholder="Describe any issues..."
+                    style={[GlobalStyles.input, { height: 100, textAlignVertical: 'top' }]}
+                    placeholder="Any specific issues or requests?"
                     placeholderTextColor={Colors.textSecondary}
                     value={notes}
                     onChangeText={setNotes}
@@ -82,8 +116,31 @@ export default function BookingScreen() {
                     numberOfLines={4}
                 />
 
-                <TouchableOpacity style={styles.bookButton} onPress={handleBook}>
-                    <Text style={styles.bookButtonText}>Request Appointment</Text>
+                {selectedService && (
+                    <View style={styles.summaryCard}>
+                        <View style={styles.summaryRow}>
+                            <Text style={styles.summaryLabel}>Service</Text>
+                            <Text style={styles.summaryValue}>{selectedService.name}</Text>
+                        </View>
+                        <View style={styles.summaryRow}>
+                            <Text style={styles.summaryLabel}>Date</Text>
+                            <Text style={styles.summaryValue}>
+                                {DATES.find(d => d.id === selectedDateId)?.day} {DATES.find(d => d.id === selectedDateId)?.date}
+                            </Text>
+                        </View>
+                        <View style={[styles.summaryRow, styles.totalRow]}>
+                            <Text style={styles.totalLabel}>Total Estimated</Text>
+                            <Text style={styles.totalValue}>${selectedService.price}</Text>
+                        </View>
+                    </View>
+                )}
+
+                <TouchableOpacity
+                    style={[GlobalStyles.primaryButton, { marginTop: 32, marginBottom: 40, opacity: (!selectedServiceId || !selectedDateId) ? 0.5 : 1 }]}
+                    onPress={handleBook}
+                    disabled={!selectedServiceId || !selectedDateId}
+                >
+                    <Text style={GlobalStyles.primaryButtonText}>Confirm Booking</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>
@@ -91,60 +148,122 @@ export default function BookingScreen() {
 }
 
 const styles = StyleSheet.create({
-    servicesContainer: {
+    servicesGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 12,
     },
     serviceCard: {
+        width: '48%',
         backgroundColor: Colors.surface,
         padding: 16,
-        borderRadius: 12,
+        borderRadius: 16,
         borderWidth: 1,
         borderColor: Colors.border,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'center',
+        aspectRatio: 1,
     },
     serviceCardSelected: {
         backgroundColor: Colors.primary,
         borderColor: Colors.primary,
+        transform: [{ scale: 1.02 }],
+    },
+    serviceIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: Colors.surfaceLight,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    serviceIconContainerSelected: {
+        backgroundColor: 'rgba(255,255,255,0.2)',
     },
     serviceName: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 14,
+        fontWeight: '600',
         color: Colors.text,
+        textAlign: 'center',
+        marginBottom: 4,
     },
     servicePrice: {
         fontSize: 14,
-        color: Colors.textSecondary,
-        marginTop: 4,
+        color: Colors.primary,
+        fontWeight: 'bold',
     },
     serviceTextSelected: {
         color: '#FFFFFF',
     },
-    input: {
+    dateScroll: {
+        marginHorizontal: -20,
+        paddingHorizontal: 20,
+    },
+    dateCard: {
         backgroundColor: Colors.surface,
-        borderRadius: 8,
-        padding: 12,
-        color: Colors.text,
+        width: 70,
+        height: 90,
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
         borderWidth: 1,
         borderColor: Colors.border,
-        marginTop: 8,
     },
-    textArea: {
-        height: 100,
-        textAlignVertical: 'top',
-    },
-    bookButton: {
+    dateCardSelected: {
         backgroundColor: Colors.primary,
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginTop: 32,
-        marginBottom: 32,
+        borderColor: Colors.primary,
     },
-    bookButtonText: {
+    dayText: {
+        color: Colors.textSecondary,
+        fontSize: 14,
+        marginBottom: 4,
+    },
+    dateText: {
+        color: Colors.text,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    dateTextSelected: {
         color: '#FFFFFF',
+    },
+    summaryCard: {
+        backgroundColor: Colors.surface,
+        borderRadius: 16,
+        padding: 20,
+        marginTop: 24,
+        borderWidth: 1,
+        borderColor: Colors.border,
+    },
+    summaryRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 12,
+    },
+    summaryLabel: {
+        color: Colors.textSecondary,
+        fontSize: 16,
+    },
+    summaryValue: {
+        color: Colors.text,
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    totalRow: {
+        marginTop: 12,
+        paddingTop: 12,
+        borderTopWidth: 1,
+        borderTopColor: Colors.border,
+    },
+    totalLabel: {
+        color: Colors.text,
         fontSize: 18,
+        fontWeight: 'bold',
+    },
+    totalValue: {
+        color: Colors.primary,
+        fontSize: 24,
         fontWeight: 'bold',
     },
 });

@@ -1,19 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
 
-// Mock data for hotspots
+// Calibrated hotspots for a side-view sportbike image
 const HOTSPOTS = [
-    { id: '1', name: 'Front Wheel', x: 72, y: 65, category: { id: 'wheels', name: 'Wheels & Tires' } },
-    { id: '2', name: 'Rear Wheel', x: 22, y: 65, category: { id: 'wheels', name: 'Wheels & Tires' } },
-    { id: '3', name: 'Engine', x: 48, y: 60, category: { id: 'engine', name: 'Engine' } },
-    { id: '4', name: 'Exhaust', x: 35, y: 70, category: { id: 'exhaust', name: 'Exhaust' } },
-    { id: '5', name: 'Seat', x: 40, y: 40, category: { id: 'body', name: 'Bodywork' } },
-    { id: '6', name: 'Handlebars', x: 68, y: 35, category: { id: 'controls', name: 'Controls' } },
-    { id: '7', name: 'Brakes', x: 70, y: 60, category: { id: 'brakes', name: 'Brakes' } },
+    { id: '1', name: 'Front Wheel', x: 74, y: 68, category: { id: 'wheels', name: 'Wheels & Tires' } },
+    { id: '2', name: 'Rear Wheel', x: 22, y: 68, category: { id: 'wheels', name: 'Wheels & Tires' } },
+    { id: '3', name: 'Engine', x: 52, y: 62, category: { id: 'engine', name: 'Engine' } },
+    { id: '4', name: 'Exhaust', x: 30, y: 75, category: { id: 'exhaust', name: 'Exhaust' } },
+    { id: '5', name: 'Seat', x: 38, y: 45, category: { id: 'body', name: 'Bodywork' } },
+    { id: '6', name: 'Handlebars', x: 68, y: 38, category: { id: 'controls', name: 'Controls' } },
+    { id: '7', name: 'Front Brakes', x: 72, y: 68, category: { id: 'brakes', name: 'Brakes' } },
 ];
 
 export default function VisualizerScreen() {
@@ -37,12 +37,11 @@ export default function VisualizerScreen() {
                 <Text style={styles.instructionText}>Tap a part to find upgrades</Text>
 
                 <View style={styles.imageContainer}>
-                    {/* Placeholder for the schematic image */}
-                    {/* In a real scenario, use: source={require('../../assets/images/motorcycle_schematic.png')} */}
-                    <View style={styles.placeholderImage}>
-                        <Ionicons name="bicycle" size={150} color={Colors.textSecondary} />
-                        <Text style={{ color: Colors.textSecondary, marginTop: 10 }}>Schematic View</Text>
-                    </View>
+                    <Image
+                        source={{ uri: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=3270&auto=format&fit=crop' }}
+                        style={styles.bikeImage}
+                        resizeMode="contain"
+                    />
 
                     {HOTSPOTS.map((hotspot) => (
                         <TouchableOpacity
@@ -114,15 +113,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    placeholderImage: {
+    bikeImage: {
         width: '100%',
         height: '100%',
-        backgroundColor: Colors.surface,
-        borderRadius: 12,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: Colors.border,
     },
     hotspot: {
         position: 'absolute',
