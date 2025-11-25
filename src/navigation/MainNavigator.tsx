@@ -2,14 +2,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Colors } from '../constants/Colors';
-import ApparelScreen from '../screens/ApparelScreen';
 import MapScreen from '../screens/MapScreen';
-import VoiceScreen from '../screens/VoiceScreen';
+import ShopStoreScreen from '../screens/ShopStoreScreen';
 import GarageNavigator from './GarageNavigator';
 import ProfileNavigator from './ProfileNavigator';
 import VisualizerNavigator from './VisualizerNavigator';
 
 const Tab = createBottomTabNavigator();
+
+
+// ... imports
 
 export default function MainNavigator() {
     return (
@@ -18,16 +20,14 @@ export default function MainNavigator() {
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName: keyof typeof Ionicons.glyphMap;
 
-                    if (route.name === 'Garage') {
-                        iconName = focused ? 'bicycle' : 'bicycle-outline';
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline';
                     } else if (route.name === 'Visualizer') {
                         iconName = focused ? 'eye' : 'eye-outline';
-                    } else if (route.name === 'Map') {
-                        iconName = focused ? 'map' : 'map-outline';
-                    } else if (route.name === 'Apparel') {
-                        iconName = focused ? 'shirt' : 'shirt-outline';
-                    } else if (route.name === 'Voice') {
-                        iconName = focused ? 'mic' : 'mic-outline';
+                    } else if (route.name === 'Location') {
+                        iconName = focused ? 'location' : 'location-outline';
+                    } else if (route.name === 'Store') {
+                        iconName = focused ? 'cart' : 'cart-outline';
                     } else if (route.name === 'Profile') {
                         iconName = focused ? 'person' : 'person-outline';
                     } else {
@@ -52,11 +52,10 @@ export default function MainNavigator() {
                 },
             })}
         >
-            <Tab.Screen name="Garage" component={GarageNavigator} options={{ headerShown: false }} />
+            <Tab.Screen name="Home" component={GarageNavigator} options={{ headerShown: false }} />
             <Tab.Screen name="Visualizer" component={VisualizerNavigator} options={{ headerShown: false }} />
-            <Tab.Screen name="Map" component={MapScreen} />
-            <Tab.Screen name="Apparel" component={ApparelScreen} />
-            <Tab.Screen name="Voice" component={VoiceScreen} />
+            <Tab.Screen name="Store" component={ShopStoreScreen} />
+            <Tab.Screen name="Location" component={MapScreen} />
             <Tab.Screen name="Profile" component={ProfileNavigator} options={{ headerShown: false }} />
         </Tab.Navigator>
     );

@@ -8,6 +8,9 @@ import PartBrandsScreen from '../screens/garage/PartBrandsScreen';
 import PartCategoriesScreen from '../screens/garage/PartCategoriesScreen';
 import PartsListScreen from '../screens/garage/PartsListScreen';
 
+import BookingScreen from '../screens/BookingScreen';
+import ShopHomeScreen from '../screens/ShopHomeScreen';
+
 const Stack = createNativeStackNavigator();
 
 export default function GarageNavigator() {
@@ -26,6 +29,8 @@ export default function GarageNavigator() {
                 },
             }}
         >
+            <Stack.Screen name="ShopHome" component={ShopHomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Booking" component={BookingScreen} options={{ title: 'Book Appointment' }} />
             <Stack.Screen name="GarageHome" component={GarageHomeScreen} options={{ title: 'My Garage' }} />
             <Stack.Screen name="AddBike" component={AddBikeScreen} options={{ title: 'Add Motorcycle' }} />
             <Stack.Screen name="BikeDetails" component={BikeDetailsScreen} options={{ title: 'Bike Details' }} />
