@@ -7,6 +7,13 @@ import { GlobalStyles } from '../constants/Styles';
 
 const { width } = Dimensions.get('window');
 
+const SERVICES = [
+    { name: 'Full Service', icon: 'build-outline', price: 'fr. $250' },
+    { name: 'Tire Change', icon: 'disc-outline', price: 'fr. $80' },
+    { name: 'Oil Change', icon: 'water-outline', price: 'fr. $120' },
+    { name: 'Dyno Tune', icon: 'speedometer-outline', price: 'fr. $300' },
+] as const;
+
 export default function ShopHomeScreen() {
     const navigation = useNavigation<any>();
 
@@ -99,12 +106,7 @@ export default function ShopHomeScreen() {
                     </View>
 
                     <View style={styles.gridContainer}>
-                        {[
-                            { name: 'Full Service', icon: 'build-outline', price: 'fr. $250' },
-                            { name: 'Tire Change', icon: 'disc-outline', price: 'fr. $80' },
-                            { name: 'Oil Change', icon: 'water-outline', price: 'fr. $120' },
-                            { name: 'Dyno Tune', icon: 'speedometer-outline', price: 'fr. $300' },
-                        ].map((service, index) => (
+                        {SERVICES.map((service, index) => (
                             <TouchableOpacity
                                 key={index}
                                 style={styles.gridItem}
