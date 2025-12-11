@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
 
@@ -8,16 +8,16 @@ const CATEGORIES = ['All', 'Oil & Fluids', 'Helmets', 'Parts', 'Accessories'];
 
 const INVENTORY = [
     // Oil & Fluids
-    { id: '1', name: 'Motul 7100 10W40 4T', price: '$89.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1635770312029-081e2544692e?q=80&w=2000&auto=format&fit=crop', description: '100% Synthetic 4-Stroke lubricant – Ester Technology – Meets bike manufacturer specifications.' },
-    { id: '3', name: 'Chain Lube Factory Line', price: '$24.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1626847037657-fd3622613ce3?q=80&w=2000&auto=format&fit=crop', description: 'White colored lubricant for racing motorcycle chains: Speed and Endurance.' },
+    { id: '1', name: 'Motul 7100 10W40 4T', price: '$89.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1598662779094-1ed83b0d58f2?q=80&w=2000&auto=format&fit=crop', description: '100% Synthetic 4-Stroke lubricant – Ester Technology – Meets bike manufacturer specifications.' },
+    { id: '3', name: 'Chain Lube Factory Line', price: '$24.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1635770310878-e0b00e400085?q=80&w=2000&auto=format&fit=crop', description: 'White colored lubricant for racing motorcycle chains: Speed and Endurance.' },
     { id: '7', name: 'Brake Fluid DOT 4', price: '$18.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1606577924004-75d2de58f6a8?q=80&w=2000&auto=format&fit=crop', description: 'High boiling point brake fluid for hydraulic brake and clutch systems.' },
     { id: '8', name: 'Coolant Factory Line', price: '$32.95', category: 'Oil & Fluids', image: 'https://images.unsplash.com/photo-1599256621730-535171e28e50?q=80&w=2000&auto=format&fit=crop', description: 'Ready to use cooling liquid for motorcycles. Anti-corrosion and anti-freeze.' },
 
     // Helmets
-    { id: '2', name: 'Shoei RF-1400 Helmet', price: '$899.00', category: 'Helmets', image: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2000&auto=format&fit=crop', description: 'The latest generation of the most prestigious sport helmet.' },
+    { id: '2', name: 'Shoei RF-1400 Helmet', price: '$899.00', category: 'Helmets', image: 'https://images.unsplash.com/photo-1622185135505-2d795043dfeb?q=80&w=2000&auto=format&fit=crop', description: 'The latest generation of the most prestigious sport helmet.' },
     { id: '9', name: 'AGV Pista GP RR', price: '$1,449.95', category: 'Helmets', image: 'https://images.unsplash.com/photo-1589750603845-ea85c2d90957?q=80&w=2000&auto=format&fit=crop', description: 'Full carbon fiber helmet used by MotoGP riders. Extreme performance.' },
     { id: '10', name: 'Arai Corsair-X', price: '$979.95', category: 'Helmets', image: 'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?q=80&w=2000&auto=format&fit=crop', description: 'Legendary ventilation and protection. The choice of champions.' },
-    { id: '11', name: 'Bell Qualifier DLX', price: '$279.95', category: 'Helmets', image: 'https://images.unsplash.com/photo-1622185135505-2d795043dfeb?q=80&w=2000&auto=format&fit=crop', description: 'Packed with features at an aggressive price. MIPS energy management system.' },
+    { id: '11', name: 'Bell Qualifier DLX', price: '$279.95', category: 'Helmets', image: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=2000&auto=format&fit=crop', description: 'Packed with features at an aggressive price. MIPS energy management system.' },
 
     // Parts
     { id: '4', name: 'K&N Oil Filter KN-204', price: '$19.95', category: 'Parts', image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2000&auto=format&fit=crop', description: 'High flow rates, exceptional filtration, and durable construction.' },
@@ -42,6 +42,11 @@ export default function ShopStoreScreen() {
         const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
+
+    const handleAddToCart = () => {
+        Alert.alert('Success', `${selectedProduct.name} added to cart!`);
+        setSelectedProduct(null);
+    };
 
     const renderItem = ({ item }: { item: any }) => (
         <TouchableOpacity
@@ -129,7 +134,7 @@ export default function ShopStoreScreen() {
                         <Text style={styles.modalPrice}>{selectedProduct?.price}</Text>
                         <Text style={styles.modalDescription}>{selectedProduct?.description}</Text>
 
-                        <TouchableOpacity style={GlobalStyles.primaryButton}>
+                        <TouchableOpacity style={GlobalStyles.primaryButton} onPress={handleAddToCart}>
                             <Text style={GlobalStyles.primaryButtonText}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>

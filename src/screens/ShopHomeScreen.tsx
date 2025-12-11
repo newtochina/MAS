@@ -1,16 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
+
+const { width } = Dimensions.get('window');
 
 export default function ShopHomeScreen() {
     const navigation = useNavigation<any>();
 
     return (
         <View style={GlobalStyles.container}>
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
                 {/* Hero Section */}
                 <View style={styles.hero}>
                     <Image
@@ -18,118 +20,115 @@ export default function ShopHomeScreen() {
                         style={styles.heroImage}
                     />
                     <View style={styles.heroOverlay}>
-                        <View style={styles.statusBadge}>
-                            <View style={styles.statusDot} />
-                            <Text style={styles.statusText}>Open Now • Closes 6PM</Text>
+                        <View style={styles.heroContent}>
+                            <View style={styles.awardBadge}>
+                                <Text style={styles.awardYear}>2025</Text>
+                                <Text style={styles.awardTitle}>CYCLE WORLD</Text>
+                                <Text style={styles.awardSubtitle}>10 BEST</Text>
+                            </View>
+
+                            <Text style={styles.heroTitle}>The best of Cycle{'\n'}World's Ten Best</Text>
+                            <Text style={styles.heroDescription}>
+                                Gold Wing Tour DCT — Best Touring Bike; CB750 Hornet — Best Middleweight Streetbike; CRF450RWE — Best Motocrosser.
+                            </Text>
+
+                            <TouchableOpacity style={styles.heroButton} onPress={() => navigation.navigate('Visualizer')}>
+                                <Text style={styles.heroButtonText}>Meet the winners</Text>
+                                <Ionicons name="arrow-forward" size={16} color="#FFF" />
+                            </TouchableOpacity>
                         </View>
-                        <Text style={styles.shopName}>Motomatch Garage</Text>
-                        <Text style={styles.tagline}>Premium Motorcycle Care & Performance</Text>
+                    </View>
+
+                    {/* Diagonal Slice */}
+                    <View style={styles.diagonalWrapper}>
+                        <View style={styles.diagonalSlice} />
                     </View>
                 </View>
 
-                <View style={GlobalStyles.screenContainer}>
-                    {/* Trust Signals */}
-                    <View style={styles.trustSignals}>
-                        <View style={styles.trustItem}>
-                            <Ionicons name="shield-checkmark" size={24} color={Colors.accent} />
-                            <Text style={styles.trustText}>Certified</Text>
-                        </View>
-                        <View style={styles.trustItem}>
-                            <Ionicons name="trophy" size={24} color={Colors.accent} />
-                            <Text style={styles.trustText}>Award Winning</Text>
-                        </View>
-                        <View style={styles.trustItem}>
-                            <Ionicons name="star" size={24} color={Colors.accent} />
-                            <Text style={styles.trustText}>4.9/5 Rating</Text>
-                        </View>
-                    </View>
+                {/* Main Content Area - Overlapping or below diagonal */}
+                <View style={[GlobalStyles.screenContainer, styles.mainContent]}>
 
-                    {/* Quick Actions */}
-                    <View style={styles.actionGrid}>
-                        <TouchableOpacity
-                            style={styles.actionCard}
-                            onPress={() => navigation.navigate('Booking')}
-                        >
-                            <View style={[styles.iconCircle, { backgroundColor: Colors.primary }]}>
-                                <Ionicons name="calendar" size={28} color="#FFF" />
-                            </View>
-                            <Text style={styles.actionTitle}>Book Service</Text>
-                            <Text style={styles.actionSubtitle}>Schedule a visit</Text>
+                    {/* Action Bar */}
+                    <View style={styles.actionBar}>
+                        <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Visualizer')}>
+                            <Text style={styles.actionText}>Find & Compare</Text>
+                            <Ionicons name="swap-horizontal" size={16} color={Colors.primary} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={styles.actionCard}
-                            onPress={() => navigation.navigate('Visualizer')}
-                        >
-                            <View style={[styles.iconCircle, { backgroundColor: Colors.surfaceLight }]}>
-                                <Ionicons name="construct" size={28} color={Colors.primary} />
-                            </View>
-                            <Text style={styles.actionTitle}>Diagnose</Text>
-                            <Text style={styles.actionSubtitle}>Identify issues</Text>
+                        <View style={styles.actionDivider} />
+
+                        <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Store')}>
+                            <Text style={styles.actionText}>Search Inventory</Text>
+                            <Ionicons name="search" size={16} color={Colors.primary} />
+                        </TouchableOpacity>
+
+                        <View style={styles.actionDivider} />
+
+                        <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Booking')}>
+                            <Text style={styles.actionText}>Current Offers</Text>
+                            <Ionicons name="pricetag" size={16} color={Colors.primary} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.dealerButton} onPress={() => navigation.navigate('Map')}>
+                            <Text style={styles.dealerButtonText}>Find a Dealer</Text>
+                            <Ionicons name="arrow-forward" size={16} color="#FFF" />
                         </TouchableOpacity>
                     </View>
 
-                    {/* Services Preview */}
+                    {/* Compact Trust Signals */}
+                    <View style={styles.trustSignalsBar}>
+                        <View style={styles.trustItemCompact}>
+                            <Ionicons name="shield-checkmark" size={16} color={Colors.textSecondary} />
+                            <Text style={styles.trustTextCompact}>Certified Service</Text>
+                        </View>
+                        <View style={styles.trustSeparator} />
+                        <View style={styles.trustItemCompact}>
+                            <Ionicons name="trophy" size={16} color={Colors.textSecondary} />
+                            <Text style={styles.trustTextCompact}>Award Winning</Text>
+                        </View>
+                        <View style={styles.trustSeparator} />
+                        <View style={styles.trustItemCompact}>
+                            <Ionicons name="star" size={16} color={Colors.textSecondary} />
+                            <Text style={styles.trustTextCompact}>4.9/5 Rating</Text>
+                        </View>
+                    </View>
+
+                    {/* Popular Services Grid */}
                     <View style={styles.sectionHeader}>
-                        <Text style={GlobalStyles.title}>Our Services</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Booking')}>
-                            <Text style={{ color: Colors.primary, fontWeight: '600' }}>See All</Text>
-                        </TouchableOpacity>
+                        <Text style={styles.sectionTitle}>Popular Services</Text>
                     </View>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicesScroll}>
+
+                    <View style={styles.gridContainer}>
                         {[
-                            { name: 'Full Service', icon: 'build', price: 'fr. $250' },
-                            { name: 'Tire Change', icon: 'disc', price: 'fr. $80' },
-                            { name: 'Oil Change', icon: 'water', price: 'fr. $120' },
-                            { name: 'Dyno Tune', icon: 'speedometer', price: 'fr. $300' },
+                            { name: 'Full Service', icon: 'build-outline', price: 'fr. $250' },
+                            { name: 'Tire Change', icon: 'disc-outline', price: 'fr. $80' },
+                            { name: 'Oil Change', icon: 'water-outline', price: 'fr. $120' },
+                            { name: 'Dyno Tune', icon: 'speedometer-outline', price: 'fr. $300' },
                         ].map((service, index) => (
-                            <View key={index} style={styles.serviceCard}>
-                                <Ionicons name={service.icon as any} size={32} color={Colors.primary} />
-                                <Text style={styles.serviceName}>{service.name}</Text>
-                                <Text style={styles.servicePrice}>{service.price}</Text>
-                            </View>
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.gridItem}
+                                onPress={() => navigation.navigate('Booking')}
+                            >
+                                <Ionicons name={service.icon as any} size={28} color={Colors.primary} style={{ marginBottom: 12 }} />
+                                <Text style={styles.gridTitle}>{service.name}</Text>
+                                <Text style={styles.gridSubtitle}>{service.price}</Text>
+                            </TouchableOpacity>
                         ))}
-                    </ScrollView>
-
-                    {/* My Garage Preview */}
-                    <View style={styles.sectionHeader}>
-                        <Text style={GlobalStyles.title}>My Garage</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('GarageHome')}>
-                            <Text style={{ color: Colors.primary, fontWeight: '600' }}>View All</Text>
-                        </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity
-                        style={styles.garageCard}
-                        onPress={() => navigation.navigate('GarageHome')}
-                    >
-                        <View style={styles.garageIcon}>
-                            <Ionicons name="bicycle" size={24} color={Colors.text} />
+                    {/* My Garage Promo */}
+                    <View style={styles.promoCard}>
+                        <View style={styles.promoContent}>
+                            <Text style={styles.promoTitle}>My Garage</Text>
+                            <Text style={styles.promoText}>Track service history, upcoming maintenance, and manage your bike specs all in one place.</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('GarageHome')}>
+                                <Text style={{ color: Colors.primary, fontWeight: '700', marginTop: 8 }}>Manage Vehicles</Text>
+                            </TouchableOpacity>
                         </View>
-                        <View>
-                            <Text style={styles.garageTitle}>Manage Your Bikes</Text>
-                            <Text style={styles.garageSubtitle}>Track service history & specs</Text>
-                        </View>
-                        <Ionicons name="chevron-forward" size={24} color={Colors.textSecondary} style={{ marginLeft: 'auto' }} />
-                    </TouchableOpacity>
+                        <Ionicons name="bicycle" size={60} color={Colors.surfaceLight} style={styles.promoIcon} />
+                    </View>
 
-                    {/* Testimonials */}
-                    <Text style={[GlobalStyles.title, { marginTop: 32 }]}>Happy Riders</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicesScroll}>
-                        {[
-                            { text: "Best mechanic in town. My Ducati runs smoother than ever!", author: "James S." },
-                            { text: "Super fast turnaround and great prices. Highly recommend!", author: "Sarah L." },
-                            { text: "The team really knows their stuff. Fixed my electrical issue in no time.", author: "Mike T." },
-                        ].map((item, index) => (
-                            <View key={index} style={styles.testimonialCard}>
-                                <Text style={styles.testimonialText}>"{item.text}"</Text>
-                                <View style={styles.testimonialAuthor}>
-                                    <Ionicons name="person-circle" size={20} color={Colors.textSecondary} />
-                                    <Text style={styles.authorName}>{item.author}</Text>
-                                </View>
-                            </View>
-                        ))}
-                    </ScrollView>
                 </View>
             </ScrollView>
         </View>
@@ -138,215 +137,238 @@ export default function ShopHomeScreen() {
 
 const styles = StyleSheet.create({
     hero: {
-        height: 350,
+        height: 500, // Taller hero
         position: 'relative',
+        backgroundColor: '#000',
+        overflow: 'hidden',
     },
     heroImage: {
         width: '100%',
         height: '100%',
+        opacity: 0.8,
     },
     heroOverlay: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0,0,0,0.2)',
         padding: 24,
-        justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.3)', // Base dim
+        paddingTop: 60,
     },
-    heroGradient: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 200,
-        // Simulating linear gradient with background color for now as we don't have expo-linear-gradient
-        backgroundColor: 'rgba(15,15,15,0.9)',
+    heroContent: {
+        flex: 1,
+        maxWidth: 320,
     },
-    shopName: {
+    awardBadge: {
+        marginBottom: 24,
+    },
+    awardYear: {
+        color: '#FFF',
+        fontSize: 48,
+        fontWeight: '900',
+        lineHeight: 48,
+    },
+    awardTitle: {
+        color: '#FFF',
+        fontSize: 14,
+        fontWeight: '700',
+        letterSpacing: 2,
+    },
+    awardSubtitle: {
+        color: '#FFF',
+        fontSize: 14,
+        fontWeight: '300',
+        letterSpacing: 1,
+    },
+    heroTitle: {
         fontSize: 36,
         fontWeight: '800',
         color: '#FFF',
-        marginBottom: 8,
-        letterSpacing: -1,
-        textShadowColor: 'rgba(0,0,0,0.5)',
-        textShadowOffset: { width: 0, height: 2 },
-        textShadowRadius: 4,
-    },
-    tagline: {
-        fontSize: 16,
-        color: '#E0E0E0',
         marginBottom: 16,
+        lineHeight: 40,
+    },
+    heroDescription: {
+        fontSize: 14,
+        color: '#EEE',
+        lineHeight: 20,
+        marginBottom: 32,
         fontWeight: '500',
     },
-    statusBadge: {
+    heroButton: {
+        borderColor: '#FFF',
+        borderWidth: 1.5,
+        paddingHorizontal: 24,
+        paddingVertical: 12,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(52, 199, 89, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
         alignSelf: 'flex-start',
-        borderWidth: 1,
-        borderColor: '#34C759',
-        marginBottom: 24,
-    },
-    statusDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#34C759',
-        marginRight: 8,
-        shadowColor: '#34C759',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-    },
-    statusText: {
-        color: '#34C759',
-        fontWeight: 'bold',
-        fontSize: 13,
-    },
-    trustSignals: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.border,
-        marginBottom: 20,
-    },
-    trustItem: {
-        alignItems: 'center',
         gap: 8,
     },
-    trustText: {
-        color: Colors.textSecondary,
-        fontSize: 12,
-        fontWeight: '600',
-    },
-    actionGrid: {
-        flexDirection: 'row',
-        gap: 16,
-        marginBottom: 32,
-    },
-    actionCard: {
-        flex: 1,
-        backgroundColor: Colors.surface,
-        padding: 20,
-        borderRadius: 20,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: Colors.border,
-        ...GlobalStyles.shadow,
-    },
-    iconCircle: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    actionTitle: {
-        color: Colors.text,
-        fontWeight: '700',
-        fontSize: 16,
-    },
-    actionSubtitle: {
-        color: Colors.textSecondary,
-        fontSize: 12,
-        marginTop: 4,
-    },
-    servicesScroll: {
-        marginHorizontal: -20,
-        paddingHorizontal: 20,
-        marginBottom: 32,
-    },
-    serviceCard: {
-        backgroundColor: Colors.surface,
-        padding: 16,
-        borderRadius: 16,
-        marginRight: 16,
-        width: 140,
-        height: 140,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: Colors.border,
-    },
-    serviceName: {
-        color: Colors.text,
-        marginTop: 16,
-        textAlign: 'center',
-        fontWeight: '600',
+    heroButtonText: {
+        color: '#FFF',
         fontSize: 14,
+        fontWeight: '700',
+        textTransform: 'uppercase',
     },
-    servicePrice: {
-        color: Colors.primary,
-        marginTop: 4,
-        fontWeight: 'bold',
+    // Diagonal styling
+    diagonalWrapper: {
+        position: 'absolute',
+        bottom: -50,
+        left: 0,
+        right: 0,
+        height: 100,
+        zIndex: 1,
+    },
+    diagonalSlice: {
+        backgroundColor: Colors.background,
+        height: 200,
+        width: '120%',
+        position: 'absolute',
+        top: 0,
+        left: -20,
+        transform: [{ rotate: '-3deg' }], // Slight diagonal
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+    },
+    mainContent: {
+        paddingTop: 0,
+        zIndex: 2,
+        marginTop: 0, // Content starts after diagonal
+    },
+    actionBar: {
+        flexDirection: 'row',
+        backgroundColor: Colors.surface,
+        borderRadius: 4, // Sharp corners like Honda? or slight radius
+        padding: 0,
+        marginBottom: 24,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: Colors.border,
+        overflow: 'hidden',
+        marginTop: -30, // Pull up to overlap slightly if needed, or just sit nicely
+    },
+    actionItem: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 16,
+        paddingHorizontal: 8,
+        gap: 6,
+    },
+    actionText: {
+        color: Colors.primary, // Red text
+        fontSize: 11,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+    actionDivider: {
+        width: 1,
+        height: 24,
+        backgroundColor: Colors.border,
+    },
+    dealerButton: {
+        backgroundColor: Colors.primary,
+        flex: 1.2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 16,
+        paddingHorizontal: 8,
+        gap: 6,
+    },
+    dealerButtonText: {
+        color: '#FFF',
+        fontSize: 11,
+        fontWeight: '700',
+    },
+    // Trust Signals
+    trustSignalsBar: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 12,
+        marginBottom: 32,
+    },
+    trustItemCompact: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+    },
+    trustTextCompact: {
+        color: Colors.textSecondary,
         fontSize: 12,
+        fontWeight: '500',
+    },
+    trustSeparator: {
+        width: 1,
+        height: 12,
+        backgroundColor: Colors.border,
+        marginHorizontal: 16,
     },
     sectionHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         marginBottom: 16,
     },
-    garageCard: {
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: Colors.text,
+    },
+    gridContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+        marginBottom: 32,
+    },
+    gridItem: {
+        width: (width - 40 - 12) / 2, // 2 columns
         backgroundColor: Colors.surface,
         padding: 20,
-        borderRadius: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
+        borderRadius: 8,
         borderWidth: 1,
         borderColor: Colors.border,
-        ...GlobalStyles.shadow,
     },
-    garageIcon: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: Colors.surfaceLight,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 16,
-    },
-    garageTitle: {
+    gridTitle: {
         color: Colors.text,
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 14,
+        fontWeight: '700',
         marginBottom: 4,
     },
-    garageSubtitle: {
+    gridSubtitle: {
         color: Colors.textSecondary,
-        fontSize: 14,
+        fontSize: 12,
     },
-    testimonialCard: {
+    promoCard: {
         backgroundColor: Colors.surface,
-        padding: 16,
-        borderRadius: 16,
-        marginRight: 16,
-        width: 280,
+        borderRadius: 8,
+        padding: 24,
+        flexDirection: 'row',
         borderWidth: 1,
         borderColor: Colors.border,
+        overflow: 'hidden',
     },
-    testimonialText: {
+    promoContent: {
+        flex: 1,
+        paddingRight: 16,
+        zIndex: 1,
+    },
+    promoTitle: {
         color: Colors.text,
+        fontSize: 20,
+        fontWeight: '700',
+        marginBottom: 8,
+    },
+    promoText: {
+        color: Colors.textSecondary,
         fontSize: 14,
-        fontStyle: 'italic',
         lineHeight: 20,
         marginBottom: 12,
     },
-    testimonialAuthor: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    authorName: {
-        color: Colors.textSecondary,
-        fontSize: 12,
-        fontWeight: '600',
+    promoIcon: {
+        position: 'absolute',
+        right: -10,
+        bottom: -10,
+        opacity: 0.1,
+        transform: [{ scale: 2 }],
     },
 });

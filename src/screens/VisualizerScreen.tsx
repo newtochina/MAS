@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, Easing, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
 
@@ -19,6 +19,30 @@ const HOTSPOTS = [
 export default function VisualizerScreen() {
     const navigation = useNavigation<any>();
     const [selectedPart, setSelectedPart] = useState<any>(null);
+    const [scanLine] = useState(new Animated.Value(0));
+
+    useEffect(() => {
+        const startScan = () => {
+            scanLine.setValue(0);
+            Animated.loop(
+                Animated.sequence([
+                    Animated.timing(scanLine, {
+                        toValue: 1,
+                        duration: 3000,
+                        easing: Easing.linear,
+                        useNativeDriver: false,
+                    }),
+                    Animated.delay(1000)
+                ])
+            ).start();
+        };
+        startScan();
+    }, []);
+
+    const scanTranslateY = scanLine.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 300] // Height of image container
+    });
 
     const handleHotspotPress = (hotspot: any) => {
         setSelectedPart(hotspot);
@@ -26,7 +50,8 @@ export default function VisualizerScreen() {
 
     const navigateToCategory = () => {
         if (selectedPart) {
-            navigation.navigate('PartBrands', { category: selectedPart.category });
+            navigation.navigate('Store'); // Navigate to Store tab first
+            // In a real app, we'd pass params to filter the store, but for now just getting to the store is good.
             setSelectedPart(null);
         }
     };
@@ -34,13 +59,27 @@ export default function VisualizerScreen() {
     return (
         <View style={GlobalStyles.container}>
             <View style={styles.contentContainer}>
-                <Text style={styles.instructionText}>Tap a part to find upgrades</Text>
+                <View style={styles.headerOverlay}>
+                    <Text style={styles.headerTitle}>AI DIAGNOSTIC</Text>
+                    <Text style={styles.headerSubtitle}>Scanning vehicle systems...</Text>
+                </View>
 
                 <View style={styles.imageContainer}>
                     <Image
                         source={{ uri: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=3270&auto=format&fit=crop' }}
                         style={styles.bikeImage}
                         resizeMode="contain"
+                    />
+
+                    {/* Scanning Line Effect */}
+                    <Animated.View
+                        style={[
+                            styles.scanLine,
+                            {
+                                top: scanTranslateY,
+                                opacity: 0.7
+                            }
+                        ]}
                     />
 
                     {HOTSPOTS.map((hotspot) => (
@@ -60,6 +99,8 @@ export default function VisualizerScreen() {
                         </TouchableOpacity>
                     ))}
                 </View>
+
+                <Text style={styles.instructionText}>Tap a highlighted component to analyze</Text>
             </View>
 
             {/* Selection Modal */}
@@ -72,21 +113,30 @@ export default function VisualizerScreen() {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
                         <View style={styles.modalHeader}>
-                            <Text style={styles.modalTitle}>{selectedPart?.name}</Text>
-                            <TouchableOpacity onPress={() => setSelectedPart(null)}>
+                            <View>
+                                <Text style={styles.modalTitle}>{selectedPart?.name}</Text>
+                                <Text style={styles.modalSubtitle}>Component Detected</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => setSelectedPart(null)} style={styles.closeButton}>
                                 <Ionicons name="close" size={24} color={Colors.text} />
                             </TouchableOpacity>
                         </View>
 
+                        <View style={styles.analysisBox}>
+                            <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />
+                            <Text style={styles.analysisText}>Compatible upgrades available</Text>
+                        </View>
+
                         <Text style={styles.modalDescription}>
-                            Find parts and upgrades for your {selectedPart?.name.toLowerCase()}.
+                            Browse premium {selectedPart?.category.name.toLowerCase()} compatible with your Ducati Panigale V4.
                         </Text>
 
                         <TouchableOpacity
                             style={styles.primaryButton}
                             onPress={navigateToCategory}
                         >
-                            <Text style={styles.primaryButtonText}>View {selectedPart?.category.name}</Text>
+                            <Text style={styles.primaryButtonText}>View Upgrades</Text>
+                            <Ionicons name="arrow-forward" size={20} color="#FFF" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -100,14 +150,33 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#000',
+    },
+    headerOverlay: {
+        position: 'absolute',
+        top: 40,
+        alignItems: 'center',
+        zIndex: 10,
+    },
+    headerTitle: {
+        color: Colors.primary,
+        fontSize: 14,
+        fontWeight: 'bold',
+        letterSpacing: 2,
+    },
+    headerSubtitle: {
+        color: Colors.textSecondary,
+        fontSize: 12,
+        marginTop: 4,
     },
     instructionText: {
-        fontSize: 16,
+        fontSize: 14,
         color: Colors.textSecondary,
-        marginBottom: 20,
+        marginTop: 40,
+        letterSpacing: 1,
     },
     imageContainer: {
-        width: Dimensions.get('window').width - 32,
+        width: Dimensions.get('window').width,
         height: 300,
         position: 'relative',
         justifyContent: 'center',
@@ -117,13 +186,24 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    scanLine: {
+        position: 'absolute',
+        width: '100%',
+        height: 2,
+        backgroundColor: Colors.primary,
+        shadowColor: Colors.primary,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 10,
+        zIndex: 5,
+    },
     hotspot: {
         position: 'absolute',
         width: 40,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: -20, // Center the hotspot
+        marginLeft: -20,
         marginTop: -20,
     },
     hotspotDot: {
@@ -132,56 +212,86 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: Colors.primary,
         zIndex: 2,
+        borderWidth: 2,
+        borderColor: '#FFF',
     },
     hotspotRing: {
         position: 'absolute',
-        width: 24,
-        height: 24,
-        borderRadius: 12,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
         backgroundColor: Colors.primary,
         opacity: 0.3,
         zIndex: 1,
     },
     modalOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         justifyContent: 'flex-end',
     },
     modalContent: {
-        backgroundColor: Colors.background,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        minHeight: 200,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 5,
-        elevation: 5,
+        backgroundColor: Colors.surface,
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        padding: 24,
+        minHeight: 280,
+        borderTopWidth: 1,
+        borderTopColor: Colors.primary,
     },
     modalHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 15,
+        alignItems: 'flex-start',
+        marginBottom: 20,
     },
     modalTitle: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
         color: Colors.text,
+    },
+    modalSubtitle: {
+        fontSize: 14,
+        color: Colors.primary,
+        fontWeight: '600',
+        marginTop: 4,
+        textTransform: 'uppercase',
+    },
+    closeButton: {
+        padding: 4,
+        backgroundColor: Colors.surfaceLight,
+        borderRadius: 20,
+    },
+    analysisBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(52, 199, 89, 0.1)',
+        padding: 12,
+        borderRadius: 12,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: 'rgba(52, 199, 89, 0.3)',
+    },
+    analysisText: {
+        color: '#34C759',
+        marginLeft: 8,
+        fontWeight: '600',
     },
     modalDescription: {
         fontSize: 16,
         color: Colors.textSecondary,
-        marginBottom: 20,
+        marginBottom: 24,
+        lineHeight: 24,
     },
     primaryButton: {
         backgroundColor: Colors.primary,
-        paddingVertical: 12,
+        paddingVertical: 16,
         paddingHorizontal: 24,
-        borderRadius: 8,
+        borderRadius: 12,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 8,
+        ...GlobalStyles.shadow,
     },
     primaryButtonText: {
         color: '#FFFFFF',

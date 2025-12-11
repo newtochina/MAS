@@ -19,7 +19,6 @@ export default function ProfileNavigator() {
                 headerTitleStyle: {
                     fontWeight: 'bold',
                 },
-                headerBackTitleVisible: false,
             }}
         >
             <Stack.Screen
