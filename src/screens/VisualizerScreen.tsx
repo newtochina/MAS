@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Animated, Dimensions, Easing, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Easing, Image, Modal, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
 
@@ -18,6 +18,7 @@ const HOTSPOTS = [
 
 export default function VisualizerScreen() {
     const navigation = useNavigation<any>();
+    const { width } = useWindowDimensions();
     const [selectedPart, setSelectedPart] = useState<any>(null);
     const [scanLine] = useState(new Animated.Value(0));
 
@@ -64,7 +65,7 @@ export default function VisualizerScreen() {
                     <Text style={styles.headerSubtitle}>Scanning vehicle systems...</Text>
                 </View>
 
-                <View style={styles.imageContainer}>
+                <View style={[styles.imageContainer, { width }]}>
                     <Image
                         source={{ uri: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=3270&auto=format&fit=crop' }}
                         style={styles.bikeImage}
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
     },
     imageContainer: {
-        width: Dimensions.get('window').width,
         height: 300,
         position: 'relative',
         justifyContent: 'center',

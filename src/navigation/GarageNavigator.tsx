@@ -9,6 +9,7 @@ import PartCategoriesScreen from '../screens/garage/PartCategoriesScreen';
 import PartsListScreen from '../screens/garage/PartsListScreen';
 
 import BookingScreen from '../screens/BookingScreen';
+import MapScreen from '../screens/MapScreen';
 import ShopHomeScreen from '../screens/ShopHomeScreen';
 
 const Stack = createNativeStackNavigator();
