@@ -72,7 +72,7 @@ export default function ProfileScreen() {
                     <Text style={styles.shopInfoTitle}>Motomatch Garage</Text>
                     <View style={styles.shopInfoRow}>
                         <Ionicons name="location" size={20} color={Colors.textSecondary} />
-                        <Text style={styles.shopInfoText}>123 O'Riordan St, Alexandria NSW 2015</Text>
+                        <Text style={styles.shopInfoText}>123 O&apos;Riordan St, Alexandria NSW 2015</Text>
                     </View>
                     <View style={styles.shopInfoRow}>
                         <Ionicons name="time" size={20} color={Colors.textSecondary} />

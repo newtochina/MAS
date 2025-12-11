@@ -1,11 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { GlobalStyles } from '../constants/Styles';
-
-const { width } = Dimensions.get('window');
 
 const SERVICES = [
     { name: 'Full Service', icon: 'build-outline', price: 'fr. $250' },
@@ -16,6 +14,7 @@ const SERVICES = [
 
 export default function ShopHomeScreen() {
     const navigation = useNavigation<any>();
+    const { width } = useWindowDimensions();
 
     return (
         <View style={GlobalStyles.container}>
@@ -34,7 +33,7 @@ export default function ShopHomeScreen() {
                                 <Text style={styles.awardSubtitle}>10 BEST</Text>
                             </View>
 
-                            <Text style={styles.heroTitle}>The best of Cycle{'\n'}World's Ten Best</Text>
+                            <Text style={styles.heroTitle}>The best of Cycle{'\n'}World&apos;s Ten Best</Text>
                             <Text style={styles.heroDescription}>
                                 Gold Wing Tour DCT — Best Touring Bike; CB750 Hornet — Best Middleweight Streetbike; CRF450RWE — Best Motocrosser.
                             </Text>
@@ -109,7 +108,7 @@ export default function ShopHomeScreen() {
                         {SERVICES.map((service, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.gridItem}
+                                style={[styles.gridItem, { width: (width - 40 - 12) / 2 }]}
                                 onPress={() => navigation.navigate('Booking')}
                             >
                                 <Ionicons name={service.icon as any} size={28} color={Colors.primary} style={{ marginBottom: 12 }} />
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
         marginBottom: 32,
     },
     gridItem: {
-        width: (width - 40 - 12) / 2, // 2 columns
+        // Width handled inline for simpler responsiveness
         backgroundColor: Colors.surface,
         padding: 20,
         borderRadius: 8,

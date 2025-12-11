@@ -33,7 +33,7 @@ export default function MapScreen() {
                     <Text style={GlobalStyles.title}>Our Location</Text>
                     <View style={styles.infoCard}>
                         <Text style={styles.shopName}>Motomatch Garage</Text>
-                        <Text style={styles.address}>123 O'Riordan St, Alexandria NSW 2015</Text>
+                        <Text style={styles.address}>123 O&apos;Riordan St, Alexandria NSW 2015</Text>
                         <TouchableOpacity style={styles.directionsButton} onPress={openMaps}>
                             <Text style={styles.directionsButtonText}>Get Directions</Text>
                         </TouchableOpacity>
@@ -55,7 +55,7 @@ export default function MapScreen() {
 
                     <View style={styles.overlayCard}>
                         <Text style={styles.shopName}>Motomatch Garage</Text>
-                        <Text style={styles.address}>123 O'Riordan St, Alexandria NSW 2015</Text>
+                        <Text style={styles.address}>123 O&apos;Riordan St, Alexandria NSW 2015</Text>
                         <TouchableOpacity style={styles.directionsButton} onPress={openMaps}>
                             <Text style={styles.directionsButtonText}>Get Directions</Text>
                         </TouchableOpacity>
