@@ -23,9 +23,11 @@ export default function VisualizerScreen() {
     const [scanLine] = useState(new Animated.Value(0));
 
     useEffect(() => {
+        let animation: Animated.CompositeAnimation | null = null;
+
         const startScan = () => {
             scanLine.setValue(0);
-            Animated.loop(
+            animation = Animated.loop(
                 Animated.sequence([
                     Animated.timing(scanLine, {
                         toValue: 1,
@@ -35,9 +37,16 @@ export default function VisualizerScreen() {
                     }),
                     Animated.delay(1000)
                 ])
-            ).start();
+            );
+            animation.start();
         };
         startScan();
+
+        return () => {
+            if (animation) {
+                animation.stop();
+            }
+        };
     }, []);
 
     const scanTranslateY = scanLine.interpolate({
